@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<internetShop>
+    <categories>
+        <category id="1" name="Smartphones">
+            <products>
+                <product id="101" name="iPhone 13">
+                    <price>79999</price>
+                    <description>
+                        Классное описание товара 1
+                    </description>
+                </product>
+                <product id="102" name="Samsung Galaxy S21">
+                    <price>69999</price>
+                    <description>
+                        Классное описание товара 2
+                    </description>
+                </product>
+            </products>
+        </category>
+        <category id="2" name="Laptops">
+            <products>
+                <product id="201" name="MacBook Air">
+                    <price>99999</price>
+                    <description>
+                        Крутое описание товара 1
+                    </description>
+                </product>
+                <product id="202" name="Dell XPS 13">
+                    <price>89999</price>
+                    <description>
+                        Крутое описание товара 2
+                    </description>
+                </product>
+            </products>
+        </category>
+    </categories>
+    <promotions>
+        <promotion id="1" name="Summer Smartphone Sale">
+            <discount percentage="15"/>
+            <products>
+                <product id="101"/>
+                <product id="102"/>
+            </products>
+        </promotion>
+        <promotion id="2" name="Free Shipping on Laptops">
+            <freeShipping/>
+            <products>
+                <product id="201"/>
+                <product id="202"/>
+            </products>
+        </promotion>
+    </promotions>
+</internetShop>

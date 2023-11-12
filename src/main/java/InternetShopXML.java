@@ -1,9 +1,7 @@
-import javax.xml.bind.annotation.XmlAttribute;
-import javax.xml.bind.annotation.XmlElement;
-import javax.xml.bind.annotation.XmlRootElement;
+import javax.xml.bind.annotation.*;
 import java.util.List;
 @XmlRootElement(name = "internetShop")
-public class InternetShop {
+public class InternetShopXML {
 
     private Categories categories;
     private Promotions promotions;
@@ -92,8 +90,8 @@ public class InternetShop {
 
         private int id;
         private String name;
-        private int price;
-
+        private Integer price;
+        private String description;
         @XmlAttribute
         public int getId() {
             return id;
@@ -112,16 +110,23 @@ public class InternetShop {
             this.name = name;
         }
 
-        @XmlAttribute
-        public int getPrice() {
+        @XmlElement(name="price")
+        public Integer getPrice() {
             return price;
         }
 
-        public void setPrice(int price) {
+        public void setPrice(Integer price) {
             this.price = price;
         }
-    }
+        @XmlElement
+        public String getDescription() {
+            return description;
+        }
 
+        public void setDescription(String description) {
+            this.description = description;
+        }
+    }
     public static class Promotions {
 
         private List<Promotion> promotionList;
