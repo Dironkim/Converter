@@ -1,0 +1,74 @@
+{
+    "categories": [
+        {
+            "id": 1,
+            "name": "Smartphones",
+            "products": [
+                {
+                    "description": "\n                        Классное описание товара 1\n                    ",
+                    "id": 101,
+                    "name": "iPhone 13",
+                    "price": 79999,
+                    "promotions": [
+                        {
+                            "discount": {
+                                "percentage": 15
+                            },
+                            "freeShipping": false,
+                            "id": 1,
+                            "name": "Summer Smartphone Sale"
+                        }
+                    ]
+                },
+                {
+                    "description": "\n                        Классное описание товара 2\n                    ",
+                    "id": 102,
+                    "name": "Samsung Galaxy S21",
+                    "price": 69999,
+                    "promotions": [
+                        {
+                            "discount": {
+                                "percentage": 15
+                            },
+                            "freeShipping": false,
+                            "id": 1,
+                            "name": "Summer Smartphone Sale"
+                        }
+                    ]
+                }
+            ]
+        },
+        {
+            "id": 2,
+            "name": "Laptops",
+            "products": [
+                {
+                    "description": "\n                        Крутое описание товара 1\n                    ",
+                    "id": 201,
+                    "name": "MacBook Air",
+                    "price": 99999,
+                    "promotions": [
+                        {
+                            "freeShipping": true,
+                            "id": 2,
+                            "name": "Free Shipping on Laptops"
+                        }
+                    ]
+                },
+                {
+                    "description": "\n                        Крутое описание товара 2\n                    ",
+                    "id": 202,
+                    "name": "Dell XPS 13",
+                    "price": 89999,
+                    "promotions": [
+                        {
+                            "freeShipping": true,
+                            "id": 2,
+                            "name": "Free Shipping on Laptops"
+                        }
+                    ]
+                }
+            ]
+        }
+    ]
+}
