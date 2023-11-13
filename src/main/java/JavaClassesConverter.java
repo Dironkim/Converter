@@ -2,57 +2,61 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class JavaClassesConverter {
+    private static List<InternetShopJSON.Category> processCategories(List<InternetShopXML.Category> xmlCategoryList, List<InternetShopXML.Promotion> xmlPromotionList){
+        List<InternetShopJSON.Category> jsonCategories = new ArrayList<>();
+        for (InternetShopXML.Category xmlCategory : xmlCategoryList) {
+            InternetShopJSON.Category jsonCategory = new InternetShopJSON.Category();
+            jsonCategory.setId(xmlCategory.getId());
+            jsonCategory.setName(xmlCategory.getName());
+            List<InternetShopXML.Product> xmlProductList = xmlCategory.getProducts().getProductList();
+            List<InternetShopJSON.Product>jsonProductList = processProducts(xmlProductList,xmlPromotionList);
+            jsonCategory.setProducts(jsonProductList);
+            jsonCategories.add(jsonCategory);
+        }
+        return jsonCategories;
+    }
+    private static List<InternetShopJSON.Product> processProducts(List<InternetShopXML.Product> xmlProductList,List<InternetShopXML.Promotion> xmlPromotionList){
+        List<InternetShopJSON.Product> jsonProductList = new ArrayList<>();
+        for (InternetShopXML.Product xmlProduct : xmlProductList) {
+            InternetShopJSON.Product jsonProduct = new InternetShopJSON.Product();
+            jsonProduct.setId(xmlProduct.getId());
+            jsonProduct.setName(xmlProduct.getName());
+            jsonProduct.setPrice(xmlProduct.getPrice());
+            jsonProduct.setDescription(xmlProduct.getDescription());
+            List<InternetShopJSON.Promotion> jsonPromotionList = processPromotions(xmlPromotionList,xmlProduct);
+            jsonProduct.setPromotions(jsonPromotionList);
+            jsonProductList.add(jsonProduct);
+        }
+        return jsonProductList;
+    }
+    private static List<InternetShopJSON.Promotion> processPromotions(List<InternetShopXML.Promotion>xmlPromotionList, InternetShopXML.Product xmlProduct){
+        List<InternetShopJSON.Promotion> jsonPromotions = new ArrayList<>();
+        for (InternetShopXML.Promotion xmlPromotion : xmlPromotionList) {
+            // Проверяем, участвует ли текущий продукт в данной акции
+            if (xmlPromotion.getProducts().getProductList().stream()
+                    .anyMatch(product -> product.getId() == xmlProduct.getId())) {
+                InternetShopJSON.Promotion jsonPromotion = new InternetShopJSON.Promotion();
+                jsonPromotion.setId(xmlPromotion.getId());
+                jsonPromotion.setName(xmlPromotion.getName());
+                InternetShopXML.Discount xmlDiscount = xmlPromotion.getDiscount();
+                if (xmlDiscount != null) {
+                    InternetShopJSON.Discount jsonDiscount = new InternetShopJSON.Discount();
+                    jsonDiscount.setPercentage(xmlDiscount.getPercentage());
+                    jsonPromotion.setDiscount(jsonDiscount);
+                }
+                //В json структуре вместо класса FreeShipping просто флаг boolean
+                jsonPromotion.setFreeShipping(xmlPromotion.getFreeShipping() != null);
+                jsonPromotions.add(jsonPromotion);
+            }
+        }
+        return jsonPromotions;
+    }
+
     public static InternetShopJSON convertToJsonStructure(InternetShopXML xmlShop) {
         InternetShopJSON jsonShop = new InternetShopJSON();
         List<InternetShopXML.Category> xmlCategories = xmlShop.getCategories().getCategoryList();
         List<InternetShopJSON.Category> jsonCategories = new ArrayList<>();
-        for (InternetShopXML.Category xmlCategory : xmlCategories) {
-            InternetShopJSON.Category jsonCategory = new InternetShopJSON.Category();
-            jsonCategory.setId(xmlCategory.getId());
-            jsonCategory.setName(xmlCategory.getName());
-
-            // Преобразование продуктов внутри категории
-            List<InternetShopXML.Product> xmlProducts = xmlCategory.getProducts().getProductList();
-            List<InternetShopJSON.Product> jsonProducts = new ArrayList<>();
-            for (InternetShopXML.Product xmlProduct : xmlProducts) {
-                InternetShopJSON.Product jsonProduct = new InternetShopJSON.Product();
-                jsonProduct.setId(xmlProduct.getId());
-                jsonProduct.setName(xmlProduct.getName());
-                jsonProduct.setPrice(xmlProduct.getPrice());
-                jsonProduct.setDescription(xmlProduct.getDescription());
-
-                // Преобразование акций внутри продукта
-                List<InternetShopXML.Promotion> xmlPromotions = xmlShop.getPromotions().getPromotionList();
-                List<InternetShopJSON.Promotion> jsonPromotions = new ArrayList<>();
-                for (InternetShopXML.Promotion xmlPromotion : xmlPromotions) {
-                    // Проверяем, участвует ли текущий продукт в данной акции
-                    if (xmlPromotion.getProducts().getProductList().stream()
-                            .anyMatch(product -> product.getId() == xmlProduct.getId())) {
-                        InternetShopJSON.Promotion jsonPromotion = new InternetShopJSON.Promotion();
-                        jsonPromotion.setId(xmlPromotion.getId());
-                        jsonPromotion.setName(xmlPromotion.getName());
-
-                        InternetShopXML.Discount xmlDiscount = xmlPromotion.getDiscount();
-                        if (xmlDiscount != null) {
-                            InternetShopJSON.Discount jsonDiscount = new InternetShopJSON.Discount();
-                            jsonDiscount.setPercentage(xmlDiscount.getPercentage());
-                            jsonPromotion.setDiscount(jsonDiscount);
-                        }
-                        //В json структуре вместо класса FreeShipping просто флаг boolean
-                        jsonPromotion.setFreeShipping(xmlPromotion.getFreeShipping() != null);
-
-                        jsonPromotions.add(jsonPromotion);
-                    }
-                }
-
-                jsonProduct.setPromotions(jsonPromotions);
-                jsonProducts.add(jsonProduct);
-            }
-
-            jsonCategory.setProducts(jsonProducts);
-            jsonCategories.add(jsonCategory);
-        }
-
+        List<InternetShopXML.Promotion> xmlPromotions = xmlShop.getPromotions().getPromotionList();
         jsonShop.setCategories(jsonCategories);
         return jsonShop;
     }
