@@ -26,11 +26,4 @@ public class JsonToObjectConverter {
         }
     }
 
-    public static void main(String[] args) {
-        // Пример использования
-        String jsonFilePath = "путь/к/вашему/файлу.json";
-        InternetShopJSON internetShopJSON = convert(jsonFilePath);
-
-        // Дальнейшие действия с объектом internetShopJSON
-    }
 }

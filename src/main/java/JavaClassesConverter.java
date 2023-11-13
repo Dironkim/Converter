@@ -2,20 +2,20 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class JavaClassesConverter {
-    private static List<InternetShopJSON.Category> processCategories(List<InternetShopXML.Category> xmlCategoryList, List<InternetShopXML.Promotion> xmlPromotionList){
+    private static List<InternetShopJSON.Category> processCategoriesXmlToJson(List<InternetShopXML.Category> xmlCategoryList, List<InternetShopXML.Promotion> xmlPromotionList){
         List<InternetShopJSON.Category> jsonCategories = new ArrayList<>();
         for (InternetShopXML.Category xmlCategory : xmlCategoryList) {
             InternetShopJSON.Category jsonCategory = new InternetShopJSON.Category();
             jsonCategory.setId(xmlCategory.getId());
             jsonCategory.setName(xmlCategory.getName());
             List<InternetShopXML.Product> xmlProductList = xmlCategory.getProducts().getProductList();
-            List<InternetShopJSON.Product>jsonProductList = processProducts(xmlProductList,xmlPromotionList);
+            List<InternetShopJSON.Product>jsonProductList = processProductsXmlToJson(xmlProductList,xmlPromotionList);
             jsonCategory.setProducts(jsonProductList);
             jsonCategories.add(jsonCategory);
         }
         return jsonCategories;
     }
-    private static List<InternetShopJSON.Product> processProducts(List<InternetShopXML.Product> xmlProductList,List<InternetShopXML.Promotion> xmlPromotionList){
+    private static List<InternetShopJSON.Product> processProductsXmlToJson(List<InternetShopXML.Product> xmlProductList, List<InternetShopXML.Promotion> xmlPromotionList){
         List<InternetShopJSON.Product> jsonProductList = new ArrayList<>();
         for (InternetShopXML.Product xmlProduct : xmlProductList) {
             InternetShopJSON.Product jsonProduct = new InternetShopJSON.Product();
@@ -23,13 +23,13 @@ public class JavaClassesConverter {
             jsonProduct.setName(xmlProduct.getName());
             jsonProduct.setPrice(xmlProduct.getPrice());
             jsonProduct.setDescription(xmlProduct.getDescription());
-            List<InternetShopJSON.Promotion> jsonPromotionList = processPromotions(xmlPromotionList,xmlProduct);
+            List<InternetShopJSON.Promotion> jsonPromotionList = processPromotionsXmlToJson(xmlPromotionList,xmlProduct);
             jsonProduct.setPromotions(jsonPromotionList);
             jsonProductList.add(jsonProduct);
         }
         return jsonProductList;
     }
-    private static List<InternetShopJSON.Promotion> processPromotions(List<InternetShopXML.Promotion>xmlPromotionList, InternetShopXML.Product xmlProduct){
+    private static List<InternetShopJSON.Promotion> processPromotionsXmlToJson(List<InternetShopXML.Promotion>xmlPromotionList, InternetShopXML.Product xmlProduct){
         List<InternetShopJSON.Promotion> jsonPromotions = new ArrayList<>();
         for (InternetShopXML.Promotion xmlPromotion : xmlPromotionList) {
             // Проверяем, участвует ли текущий продукт в данной акции
@@ -55,12 +55,12 @@ public class JavaClassesConverter {
     public static InternetShopJSON convertToJsonStructure(InternetShopXML xmlShop) {
         InternetShopJSON jsonShop = new InternetShopJSON();
         List<InternetShopXML.Category> xmlCategories = xmlShop.getCategories().getCategoryList();
-        List<InternetShopJSON.Category> jsonCategories = new ArrayList<>();
         List<InternetShopXML.Promotion> xmlPromotions = xmlShop.getPromotions().getPromotionList();
+        List<InternetShopJSON.Category> jsonCategories = processCategoriesXmlToJson(xmlCategories,xmlPromotions);
         jsonShop.setCategories(jsonCategories);
         return jsonShop;
     }
-    private static List<InternetShopXML.Category> processCategories(List<InternetShopJSON.Category> jsonCategoryList,List<InternetShopXML.Promotion> savedPromotionsXML){
+    private static List<InternetShopXML.Category> processCategoriesJsonToXml(List<InternetShopJSON.Category> jsonCategoryList, List<InternetShopXML.Promotion> savedPromotionsXML){
         if (jsonCategoryList != null && !jsonCategoryList.isEmpty()) {
             List<InternetShopXML.Category> xmlCategoryList = new ArrayList<>();
             for (InternetShopJSON.Category jsonCategory : jsonCategoryList){
@@ -69,7 +69,7 @@ public class JavaClassesConverter {
                 xmlCategory.setName(jsonCategory.getName());
                 List<InternetShopJSON.Product>jsonProductList=jsonCategory.getProducts();
                 InternetShopXML.Products xmlProducts= new InternetShopXML.Products();
-                List<InternetShopXML.Product> xmlProductList=processProducts(jsonProductList,savedPromotionsXML);
+                List<InternetShopXML.Product> xmlProductList= processProductsJsonToXml(jsonProductList,savedPromotionsXML);
                 xmlProducts.setProductList(xmlProductList);
                 xmlCategory.setProducts(xmlProducts);
                 xmlCategoryList.add(xmlCategory);
@@ -78,7 +78,7 @@ public class JavaClassesConverter {
         }
         else return null;
     }
-    private static List<InternetShopXML.Product> processProducts(List<InternetShopJSON.Product> jsonProductList,List<InternetShopXML.Promotion> savedPromotionsXML){
+    private static List<InternetShopXML.Product> processProductsJsonToXml(List<InternetShopJSON.Product> jsonProductList, List<InternetShopXML.Promotion> savedPromotionsXML){
         if (jsonProductList != null && !jsonProductList.isEmpty()) {
             List<InternetShopXML.Product> xmlProductList = new ArrayList<>();
             for (InternetShopJSON.Product jsonProduct : jsonProductList) {
@@ -87,14 +87,14 @@ public class JavaClassesConverter {
                 xmlProduct.setName(jsonProduct.getName());
                 xmlProduct.setPrice(jsonProduct.getPrice());
                 xmlProduct.setDescription(jsonProduct.getDescription());
-                processPromotions(jsonProduct,savedPromotionsXML);
+                processPromotionsJsonToXml(jsonProduct,savedPromotionsXML);
                 xmlProductList.add(xmlProduct);
             }
             return xmlProductList;
         }
         else return null;
     }
-    private static void processPromotions(InternetShopJSON.Product jsonProduct,  List<InternetShopXML.Promotion> savedPromotionsXML){
+    private static void processPromotionsJsonToXml(InternetShopJSON.Product jsonProduct, List<InternetShopXML.Promotion> savedPromotionsXML){
         if (jsonProduct!=null) {
             List<InternetShopJSON.Promotion>jsonPromotionList=jsonProduct.getPromotions();
             if (jsonPromotionList != null && !jsonPromotionList.isEmpty()) {
@@ -140,7 +140,7 @@ public class JavaClassesConverter {
         InternetShopXML xmlShop = new InternetShopXML();
         List<InternetShopJSON.Category> jsonCategories = jsonShop.getCategories();
         List<InternetShopXML.Promotion> xmlPromotionList=new ArrayList<>();
-        List<InternetShopXML.Category> xmlCategoryList=processCategories(jsonCategories,xmlPromotionList);
+        List<InternetShopXML.Category> xmlCategoryList= processCategoriesJsonToXml(jsonCategories,xmlPromotionList);
         InternetShopXML.Categories xmlCategories = new InternetShopXML.Categories();
         xmlCategories.setCategoryList(xmlCategoryList);
         xmlShop.setCategories(xmlCategories);
