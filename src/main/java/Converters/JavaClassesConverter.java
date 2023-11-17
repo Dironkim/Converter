@@ -1,3 +1,8 @@
+package Converters;
+
+import Structures.InternetShopJSON;
+import Structures.InternetShopXML;
+
 import java.util.ArrayList;
 import java.util.List;
 

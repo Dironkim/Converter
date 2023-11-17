@@ -1,3 +1,7 @@
+import Converters.*;
+import Structures.InternetShopJSON;
+import Structures.InternetShopXML;
+
 public class ControlPanel {
     public static void main(String[] args) {
         if (args.length!=2)

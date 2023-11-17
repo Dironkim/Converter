@@ -1,3 +1,5 @@
+package Structures;
+
 import javax.xml.bind.annotation.*;
 import java.util.List;
 @XmlRootElement(name = "internetShop")

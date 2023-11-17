@@ -1,14 +1,13 @@
+package Converters;
+
+import Structures.InternetShopJSON;
 import com.squareup.moshi.JsonAdapter;
 import com.squareup.moshi.Moshi;
-import com.squareup.moshi.Types;
 import okio.BufferedSink;
 
 import java.io.File;
-import java.io.FileWriter;
 import java.io.IOException;
-import java.io.Writer;
-import java.lang.reflect.Type;
-import okio.BufferedSink;
+
 import okio.Okio;
 
 public class ObjectToJsonConverter {

@@ -1,7 +1,9 @@
+package Converters;
+
+import Structures.InternetShopJSON;
 import com.squareup.moshi.JsonAdapter;
 import com.squareup.moshi.Moshi;
 
-import java.io.File;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Paths;
