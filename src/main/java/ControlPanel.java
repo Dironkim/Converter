@@ -8,6 +8,8 @@ public class ControlPanel {
             System.out.println("Argument error: 2 file paths required");
         else
             convert(args[0],args[1]);
+        //convertXmlToJson("D:\\java_exec\\webShop.xml","D:\\java_exec\\new3.json");
+        //convertJsonToXml("D:\\java_exec\\new3.json","D:\\java_exec\\back3.xml");
     }
     public static void convert(String file1, String file2){
         if (file1.endsWith(".xml") && file2.endsWith(".json")){
