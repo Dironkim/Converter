@@ -8,6 +8,9 @@ import lombok.Builder;
 import java.util.List;
 
 @Data
+@Builder
+@NoArgsConstructor
+@AllArgsConstructor
 public class InternetShopJSON {
 
     private List<Category> categories;

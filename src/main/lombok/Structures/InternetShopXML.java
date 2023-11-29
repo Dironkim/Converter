@@ -10,6 +10,9 @@ import java.util.List;
 
 @XmlRootElement(name = "internetShop")
 @Data
+@Builder
+@NoArgsConstructor
+@AllArgsConstructor
 public class InternetShopXML {
 
     @XmlElement(name = "categories")
@@ -19,6 +22,9 @@ public class InternetShopXML {
     private Promotions promotions;
 
     @Data
+    @Builder
+    @NoArgsConstructor
+    @AllArgsConstructor
     public static class Categories {
 
         @XmlElement(name = "category")
@@ -42,6 +48,9 @@ public class InternetShopXML {
     }
 
     @Data
+    @Builder
+    @NoArgsConstructor
+    @AllArgsConstructor
     public static class Products {
 
         @XmlElement(name = "product")
@@ -69,6 +78,9 @@ public class InternetShopXML {
     }
 
     @Data
+    @Builder
+    @NoArgsConstructor
+    @AllArgsConstructor
     public static class Promotions {
 
         @XmlElement(name = "promotion")
